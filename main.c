@@ -52,7 +52,7 @@ int main()
 
     printf("TEMPFS_PACKAGE : %d\n", sizeof(TEMPFS_PACKAGE));
 
-    dpm_init();
+    dpm_init("disk.img");
     int detect = fs_tempfs_detect('T');
     if (detect == 0){
         printf(" |--- [ERR] Could not verify validity on TempFS\n");

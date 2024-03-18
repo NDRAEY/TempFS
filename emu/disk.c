@@ -1,26 +1,24 @@
 #include "../port.h"
 
-#define DISK_PATH "disk.img"
-
 FILE *disk;
 size_t disk_size = 0;
 
 DPM_Disk DPM_Disks[32] = {0};
 
 /**
- * @brief Проверка наличии файла по пути
+ * @brief пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
  *
- * @param Path - Путь, который проверяем
- * @param Name - Имя файла с полным путем для проверки
+ * @param Path - пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+ * @param Name - пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
  *
- * @return int - 1 если путь есть
+ * @return int - 1 пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
  */
 int fsm_isPathToFile(const char* Path,const char* Name){
-	char* zpath = pathinfo(Name, PATHINFO_DIRNAME);					///< Получаем родительскую папку элемента
-	char* bpath = pathinfo(Name, PATHINFO_BASENAME);				///< Получаем имя файла (или пустоту если папка)
-	bool   isCheck1 = strcmpn(zpath,Path);				            ///< Проверяем совпадение путей
-	bool   isCheck2 = strlen(bpath) == 0;				            ///< Проверяем, что путе нет ничего лишнего (будет 0, если просто папка)
-	bool   isCheck3 = str_contains(Name, Path);	                    ///< Проверяем наличие, вхождения путя
+	char* zpath = pathinfo(Name, PATHINFO_DIRNAME);					///< пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	char* bpath = pathinfo(Name, PATHINFO_BASENAME);				///< пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ)
+	bool   isCheck1 = strcmpn(zpath,Path);				            ///< пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+	bool   isCheck2 = strlen(bpath) == 0;				            ///< пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅ 0, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ)
+	bool   isCheck3 = str_contains(Name, Path);	                    ///< пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	size_t c1 = str_cdsp2(Path,'\\');
 	size_t c2 = str_cdsp2(Name,'\\');
 	size_t c3 = str_cdsp2(Path,'/');
@@ -35,35 +33,35 @@ int fsm_isPathToFile(const char* Path,const char* Name){
 }
 
 
-void get_disk_size() {
-    printf(" |--- [>] Attempt to open to get the file size from %s\n", DISK_PATH);
-    FILE *file = fopen(DISK_PATH, "rb");    // Открываем файл в режиме чтения бинарных данных
+void get_disk_size(const char* path) {
+    printf(" |--- [>] Attempt to open to get the file size from %s\n", path);
+    FILE *file = fopen(path, "rb");    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     if (file == NULL){
             printf(" |     |--- [ERR] An error occurred while retrieving the file size\n");
             printf(" |\n");
             return;
     }
-    fseek(file, 0, SEEK_END);               // Устанавливаем позицию указателя файла в конец файла
-    disk_size = ftell(file);                // Получаем текущую позицию указателя файла, что является размером файла
-    fclose(file);                           // Закрываем файл
+    fseek(file, 0, SEEK_END);               // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+    disk_size = ftell(file);                // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+    fclose(file);                           // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
     printf(" |     |--- [OK] File size: %d\n", (int) disk_size);
     printf(" |\n");
 }
 
 
 /**
- * @brief [DPM] Считывание данных с диска
+ * @brief [DPM] пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ
  *
- * @param Letter - Буква для считывания
- * @param Offset - Отступ для считывания
- * @param Size - Кол-во байт данных для считывания
- * @param Buffer - Буфер куда будет идти запись
+ * @param Letter - пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+ * @param Offset - пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+ * @param Size - пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+ * @param Buffer - пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
  *
- * @return Кол-во прочитанных байт
+ * @return пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
  */
 size_t dpm_read(char Letter, size_t Offset, size_t Size, void* Buffer){
-    /// Взято с https://github.com/pimnik98/SayoriOS/blob/main/kernel/src/drv/disk/dpm.c
-    /// Но в примере будет игнорироваться буква диска и переписано для работы с файлом
+    /// пїЅпїЅпїЅпїЅпїЅ пїЅ https://github.com/pimnik98/SayoriOS/blob/main/kernel/src/drv/disk/dpm.c
+    /// пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     int go = fseek(disk, Offset, SEEK_SET);
     if (Offset > disk_size){
         printf("[WARN] It was not possible to move to the %d position, due to: exceeding the limits of the disk volume\n", (unsigned int) Offset);
@@ -78,18 +76,18 @@ size_t dpm_read(char Letter, size_t Offset, size_t Size, void* Buffer){
 
 
 /**
- * @brief [DPM] Запись данных на диск
+ * @brief [DPM] пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
  *
- * @param Letter - Буква
- * @param size_t Offset - Отступ
- * @param size_t Size - Кол-во байт данных для записи
- * @param Buffer - Буфер откуда будет идти запись
+ * @param Letter - пїЅпїЅпїЅпїЅпїЅ
+ * @param size_t Offset - пїЅпїЅпїЅпїЅпїЅпїЅ
+ * @param size_t Size - пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+ * @param Buffer - пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
  *
- * @return size_t - Кол-во записанных байт
+ * @return size_t - пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
  */
 size_t dpm_write(char Letter, size_t Offset, size_t Size, void* Buffer){
-    /// Взято с https://github.com/pimnik98/SayoriOS/blob/main/kernel/src/drv/disk/dpm.c
-    /// Но в примере будет игнорироваться буква диска и переписано для работы с файлом
+    /// пїЅпїЅпїЅпїЅпїЅ пїЅ https://github.com/pimnik98/SayoriOS/blob/main/kernel/src/drv/disk/dpm.c
+    /// пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     int go = fseek(disk, Offset, SEEK_SET);
     if (Offset > disk_size){
         printf("[WARN] It was not possible to move to the %d position, due to: exceeding the limits of the disk volume\n", (unsigned int) Offset);
@@ -128,15 +126,15 @@ void dpm_metadata_write(char Letter, uint32_t Addr){
 }
 
 
-void dpm_init(){
-    /// Инициализируем типа диск, для этого мы будем использовать файл
-    printf("\n[>] Attempt to load disk \"%s\"\n", DISK_PATH);
-    disk = fopen(DISK_PATH, "r+b");
+void dpm_init(const char* path) {
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+    printf("\n[>] Attempt to load disk \"%s\"\n", path);
+    disk = fopen(path, "r+b");
     if (disk == NULL) {
         printf (" |--- [ERR] File disk.img no found!\n");
         exit(1);
     }
-    get_disk_size();
-    printf(" |--- [OK] Loaded disk \"%s\"\n", DISK_PATH);
+    get_disk_size(path);
+    printf(" |--- [OK] Loaded disk \"%s\"\n", path);
     printf(" |--- [OK] Size disk %d b. | %d kb. | %d mb.\n", (int) disk_size, (int) disk_size/1024, (int) disk_size/1024/1024);
 }

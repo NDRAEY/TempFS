@@ -3,11 +3,11 @@
 
 
 typedef struct {
-	bool Ready;				///< Устройство подключено? (1 - да | 0 - нет)
-	void* Reserved;			///< Можно в ОЗУ дописать доп.данные если требуется.
+	bool Ready;				///< пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ? (1 - пїЅпїЅ | 0 - пїЅпїЅпїЅ)
+	void* Reserved;			///< пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 } __attribute__((packed)) DPM_Disk;
 
-void dpm_init();
+void dpm_init(const char* path);
 size_t dpm_write(char Letter, size_t Offset, size_t Size, void *Buffer);
 size_t dpm_read(char Letter, size_t Offset, size_t Size, void *Buffer);
 size_t dpm_get_size(char Letter);

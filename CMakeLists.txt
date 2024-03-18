@@ -9,10 +9,10 @@ set(PROJECT_FILES
 	ext/my_string.h
 	ext/pathinfo.c
 	ext/pathinfo.h
-	main.c
 	port.h
 	tempfs.c
 	tempfs.h
 )
 
-add_executable(tempfs ${PROJECT_FILES})
+add_executable(tempfs ${PROJECT_FILES} main.c)
+add_executable(tempfs_utils ${PROJECT_FILES} util.c)
