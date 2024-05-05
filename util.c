@@ -68,10 +68,21 @@ struct command {
     void (*func)(int argc, char** argv);
 };
 
+void help();
+
 static const struct command commands[] = {
+        {"help", help},
         {"disk", util_create_empty_disk},
         {"create", util_create_disk},
 };
+
+
+void help() {
+	printf("Available commands:\n");
+	for(int i = 0, count = sizeof(commands) / sizeof(struct command); i < count; i++) {
+		printf("- %s\n", commands[i].name);
+	}
+}
 
 int main(int argc, char *argv[]) {
     if(argc < 2) {
